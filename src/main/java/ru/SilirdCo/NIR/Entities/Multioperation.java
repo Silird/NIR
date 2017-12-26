@@ -3,14 +3,14 @@ package ru.SilirdCo.NIR.Entities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Multioperation {
+public class Multioperation implements Comparable<Multioperation> {
     private final static Logger logger = LoggerFactory.getLogger(Multioperation.class);
 
     public final static Multioperation EMPTY = new Multioperation(
             Element.EMPTY, Element.EMPTY, Element.EMPTY, Element.EMPTY);
     public final static Multioperation FULL = new Multioperation(
             Element.FULL, Element.FULL, Element.FULL, Element.FULL);
-    public final static Multioperation E11 = new Multioperation(
+    public final static Multioperation E12 = new Multioperation(
             Element.E1, Element.E1, Element.E2, Element.E2);
     public final static Multioperation E22 = new Multioperation(
             Element.E1, Element.E2, Element.E1, Element.E2);
@@ -68,5 +68,20 @@ public class Multioperation {
         if  ((this.twoTwo != null) && (!this.twoTwo.equals(other.twoTwo))) return false;
 
         return true;
+    }
+
+    @Override
+    public int compareTo(Multioperation o) {
+        int result = oneOne.getVector().compareTo(o.oneOne.getVector());
+        if (result == 0) {
+            result = oneTwo.getVector().compareTo(o.oneTwo.getVector());
+            if (result == 0) {
+                result = twoOne.getVector().compareTo(o.twoOne.getVector());
+                if (result == 0) {
+                    result = twoTwo.getVector().compareTo(o.twoTwo.getVector());
+                }
+            }
+        }
+        return result;
     }
 }

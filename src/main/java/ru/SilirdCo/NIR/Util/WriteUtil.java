@@ -37,6 +37,7 @@ public class WriteUtil {
                 StringBuilder stringBuilder = new StringBuilder();
                 for (List<Multioperation> multioperations : list) {
                     stringBuilder.append(Arrays.toString(multioperations.toArray()));
+                    stringBuilder.append("\n");
                 }
 
                 out.print(stringBuilder.toString());

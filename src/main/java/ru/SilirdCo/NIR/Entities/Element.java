@@ -13,6 +13,7 @@ public enum Element {
 
     private static final Logger logger = LoggerFactory.getLogger(Element.class);
 
+    // Получить перечисление какие операции есть в множестве для вычисления
     public Set<Integer> getSet() {
         Set<Integer> result = new HashSet<>();
         switch (this) {
@@ -34,6 +35,7 @@ public enum Element {
         }
     }
 
+    // Получить элемент по данному перечислению
     public static Element getElement(Set<Integer> set) {
         if (set.isEmpty()) {
             return Element.EMPTY;
@@ -53,11 +55,24 @@ public enum Element {
         }
     }
 
-    @Override
-    public String toString() {
-        return getVector() + " " + getFullRecord();
+    // Получить элемент по векторной записи
+    public static Element getElement(String str) {
+        switch(str) {
+            case "0":
+                return EMPTY;
+            case "1":
+                return E1;
+            case "2":
+                return E2;
+            case "3":
+                return FULL;
+            default:
+                logger.warn("Не найдено множество для: " + str);
+                return EMPTY;
+        }
     }
 
+    // Получить векторную запись элемента
     public String getVector() {
         switch (this) {
             case EMPTY:
@@ -74,6 +89,7 @@ public enum Element {
         }
     }
 
+    // Получить полную запись элемента
     public String getFullRecord() {
         switch (this) {
             case EMPTY:
@@ -88,5 +104,10 @@ public enum Element {
                 logger.warn("Не найдено множество для: " + this);
                 return "";
         }
+    }
+
+    @Override
+    public String toString() {
+        return getVector() + " " + getFullRecord();
     }
 }

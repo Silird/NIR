@@ -13,6 +13,7 @@ import java.util.Set;
 public class MultioperationUtil {
     private static final Logger logger = LoggerFactory.getLogger(MultioperationUtil.class);
 
+    // Оператор разрешимости по первому аргументу (см лекцию)
     public static Multioperation getFirstMegaoperation(Multioperation multioperation) {
         Set<Integer> set = new HashSet<>();
 
@@ -97,6 +98,7 @@ public class MultioperationUtil {
         return new Multioperation(oneOne, oneTwo, twoOne, twoTwo);
     }
 
+    // Суперпозиция
     public static Multioperation getSuperposition(Multioperation multioperation0,
                                                   Multioperation multioperation1,
                                                   Multioperation multioperation2) {
@@ -127,9 +129,9 @@ public class MultioperationUtil {
         return new Multioperation(oneOne, oneTwo, twoOne, twoTwo);
     }
 
-    public static List<Integer> generateCheckListSuperposition(int pos,
-                                                               Multioperation multioperation1,
-                                                               Multioperation multioperation2) {
+    private static List<Integer> generateCheckListSuperposition(int pos,
+                                                                Multioperation multioperation1,
+                                                                Multioperation multioperation2) {
         List<Integer> checkList = new ArrayList<>();
         switch (multioperation1.get(pos)) {
             case EMPTY:

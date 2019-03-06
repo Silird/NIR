@@ -2,6 +2,7 @@ package ru.SilirdCo.NIR.Entities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.SilirdCo.NIR.Util.ExceptionHandler;
 
 public class Multioperation implements Comparable<Multioperation> {
     private final static Logger logger = LoggerFactory.getLogger(Multioperation.class);
@@ -15,16 +16,61 @@ public class Multioperation implements Comparable<Multioperation> {
     public final static Multioperation E22 = new Multioperation(
             Element.E1, Element.E2, Element.E1, Element.E2);
 
+    // oneOne (1) | oneTwo (2)
+    // -----------------------
+    // twoOne (3) | twoTwo (4)
     private final Element oneOne;
     private final Element oneTwo;
     private final Element twoOne;
     private final Element twoTwo;
 
+    // Конструктор по 4 элеменам
     public Multioperation(Element oneOne, Element oneTwo, Element twoOne, Element twoTwo) {
         this.oneOne = oneOne;
         this.oneTwo = oneTwo;
         this.twoOne = twoOne;
         this.twoTwo = twoTwo;
+    }
+
+    //Конструктор по векторной записи (Так сложно так как финал переменные в классе)
+    public Multioperation(String str) {
+        String oneOneStr = null;
+        String oneTwoStr = null;
+        String twoOneStr = null;
+        String twoTwoStr = null;
+        try {
+            oneOneStr = str.substring(0, 1);
+            oneTwoStr = str.substring(1, 2);
+            twoOneStr = str.substring(2, 3);
+            twoTwoStr = str.substring(3, 4);
+        }
+        catch (StringIndexOutOfBoundsException ex) {
+            ExceptionHandler.handle(logger, ex);
+        }
+        if (oneOneStr != null) {
+            this.oneOne = Element.getElement(oneOneStr);
+        }
+        else {
+            this.oneOne = Element.EMPTY;
+        }
+        if (oneTwoStr != null) {
+            this.oneTwo = Element.getElement(oneTwoStr);
+        }
+        else {
+            this.oneTwo = Element.EMPTY;
+        }
+        if (twoOneStr != null) {
+            this.twoOne = Element.getElement(twoOneStr);
+        }
+        else {
+            this.twoOne = Element.EMPTY;
+        }
+        if (twoTwoStr != null) {
+            this.twoTwo = Element.getElement(twoTwoStr);
+        }
+        else {
+            this.twoTwo = Element.EMPTY;
+        }
     }
 
     public Element get(int pos) {
@@ -43,10 +89,18 @@ public class Multioperation implements Comparable<Multioperation> {
         }
     }
 
-    @Override
-    public String toString() {
+    public String toStringVector() {
+        return oneOne.getVector() + oneTwo.getVector() + twoOne.getVector() + twoTwo.getVector();
+    }
+
+    public String toStringFull() {
         return "(" + oneOne.getFullRecord() + ", " + oneTwo.getFullRecord() + ", " +
                 twoOne.getFullRecord() + ", " + twoTwo.getFullRecord() + ")";
+    }
+
+    @Override
+    public String toString() {
+        return toStringFull();
     }
 
     @Override

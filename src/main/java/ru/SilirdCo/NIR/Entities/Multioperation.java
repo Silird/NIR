@@ -8,13 +8,25 @@ public class Multioperation implements Comparable<Multioperation> {
     private final static Logger logger = LoggerFactory.getLogger(Multioperation.class);
 
     public final static Multioperation EMPTY = new Multioperation(
-            Element.EMPTY, Element.EMPTY, Element.EMPTY, Element.EMPTY);
+            Element.EMPTY,
+            Element.EMPTY,
+            Element.EMPTY,
+            Element.EMPTY);
     public final static Multioperation FULL = new Multioperation(
-            Element.FULL, Element.FULL, Element.FULL, Element.FULL);
+            Element.FULL,
+            Element.FULL,
+            Element.FULL,
+            Element.FULL);
     public final static Multioperation E12 = new Multioperation(
-            Element.E1, Element.E1, Element.E2, Element.E2);
+            Element.E1,
+            Element.E1,
+            Element.E2,
+            Element.E2);
     public final static Multioperation E22 = new Multioperation(
-            Element.E1, Element.E2, Element.E1, Element.E2);
+            Element.E1,
+            Element.E2,
+            Element.E1,
+            Element.E2);
 
     // oneOne (1) | oneTwo (2)
     // -----------------------

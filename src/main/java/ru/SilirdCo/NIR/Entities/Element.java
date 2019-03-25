@@ -106,6 +106,10 @@ public enum Element {
         }
     }
 
+    public boolean contains(int value) {
+        return this.getSet().contains(value);
+    }
+
     @Override
     public String toString() {
         return getVector() + " " + getFullRecord();

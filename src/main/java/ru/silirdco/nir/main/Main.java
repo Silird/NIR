@@ -1,11 +1,6 @@
 package ru.silirdco.nir.main;
 
-import ru.silirdco.nir.core.entities.Multioperation;
 import ru.silirdco.nir.view.LaunchView;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Main {
     public static void main(String[] args) {

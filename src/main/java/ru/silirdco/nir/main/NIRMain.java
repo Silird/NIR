@@ -1,12 +1,12 @@
-package ru.SilirdCo.NIR.Main;
+package ru.silirdco.nir.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.SilirdCo.NIR.Entities.Element;
-import ru.SilirdCo.NIR.Entities.Multioperation;
-import ru.SilirdCo.NIR.Util.EnumerationUtil;
-import ru.SilirdCo.NIR.Util.MultioperationUtil;
-import ru.SilirdCo.NIR.Util.WriteUtil;
+import ru.silirdco.nir.core.entities.Element;
+import ru.silirdco.nir.core.entities.Multioperation;
+import ru.silirdco.nir.core.util.EnumerationUtil;
+import ru.silirdco.nir.core.util.MultioperationUtil;
+import ru.silirdco.nir.core.util.WriteUtil;
 
 import java.util.*;
 

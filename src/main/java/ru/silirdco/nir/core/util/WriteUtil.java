@@ -1,8 +1,8 @@
-package ru.SilirdCo.NIR.Util;
+package ru.silirdco.nir.core.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.SilirdCo.NIR.Entities.Multioperation;
+import ru.silirdco.nir.core.entities.Multioperation;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

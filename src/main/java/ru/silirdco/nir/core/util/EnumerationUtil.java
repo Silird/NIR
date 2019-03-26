@@ -1,9 +1,11 @@
-package ru.SilirdCo.NIR.Util;
+package ru.silirdco.nir.core.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -20,12 +22,12 @@ public class EnumerationUtil {
 
     // Просмотреть все возможные комбинации с элементами list в количестве элементов не большем limit
     // и выполнить для каждой такой комбинации action
-    public static <T> void enumerate(int limit, final List<T> list, Consumer<List<T>> action) {
+    public static <T> void enumerate(int limit, final Collection<T> list, Consumer<List<T>> action) {
         generateList(0, limit, list, new ArrayList<>(), action);
     }
 
     private static <T> void generateList(int depth, int max,
-                                         List<T> list, List<T> generated,
+                                         Collection<T> list, List<T> generated,
                                          Consumer<List<T>> action) {
         if (depth == max) {
             if (action == null) {
@@ -46,7 +48,7 @@ public class EnumerationUtil {
 
     // Тоже самое что и выше, только в комбинациях элементы не могут повторяться
     private static <T> void generateListWithOutDuplication(int depth, int max,
-                                         List<T> list, List<T> generated,
+                                         Collection<T> list, List<T> generated,
                                          Consumer<List<T>> action) {
         if (depth == max) {
             if (action == null) {

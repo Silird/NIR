@@ -1,6 +1,6 @@
-package ru.SilirdCo.NIR.Util;
+package ru.silirdco.nir.core.util;
 
-import ru.SilirdCo.NIR.Entities.Element;
+import ru.silirdco.nir.core.entities.Element;
 
 import java.util.HashSet;
 import java.util.Set;

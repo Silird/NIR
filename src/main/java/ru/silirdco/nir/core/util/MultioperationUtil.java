@@ -1,9 +1,9 @@
-package ru.SilirdCo.NIR.Util;
+package ru.silirdco.nir.core.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.SilirdCo.NIR.Entities.Element;
-import ru.SilirdCo.NIR.Entities.Multioperation;
+import ru.silirdco.nir.core.entities.Element;
+import ru.silirdco.nir.core.entities.Multioperation;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -104,7 +104,7 @@ public class MultioperationUtil {
         );
     }
 
-    // Util
+    // util
     // ====================================================
     private static Set<Integer> cross(Set<Integer> s1, Set<Integer> s2) {
         Set<Integer> result = new HashSet<>();

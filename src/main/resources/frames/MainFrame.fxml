@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="749.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="200.0" spacing="10.0" HBox.hgrow="SOMETIMES">
+               <children>
+                  <Button fx:id="butCalculate" mnemonicParsing="false" text="Посчитать" />
+                  <CheckBox fx:id="checkNull" mnemonicParsing="false" text="Нулевой элемент" />
+                  <CheckBox fx:id="checkOne" mnemonicParsing="false" text="Единичный элемент" />
+                  <CheckBox fx:id="checkUniversal" mnemonicParsing="false" text="Универсальный элемент" />
+                  <CheckBox fx:id="checkSubstitution" mnemonicParsing="false" text="Подстановка на 1 элемент" />
+                  <CheckBox fx:id="checkMegaoperation" mnemonicParsing="false" text="Оператор разрешимости" />
+                  <CheckBox fx:id="checkCross" mnemonicParsing="false" text="Пересечение" />
+                  <CheckBox fx:id="checkUnion" mnemonicParsing="false" text="Объединение" />
+                  <CheckBox fx:id="checkAddition" mnemonicParsing="false" text="Дополнение" />
+                  <CheckBox fx:id="checkTransposition" mnemonicParsing="false" text="Транспозиция" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
+                     <children>
+                        <TextField fx:id="textMeassage" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="butClear" mnemonicParsing="false" text="Очистить" />
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox fx:id="hboxMultioperations" spacing="20.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="0000" />
+                                    <CheckBox mnemonicParsing="false" text="0001" />
+                                    <CheckBox mnemonicParsing="false" text="0002" />
+                                    <CheckBox mnemonicParsing="false" text="0003" />
+                                    <CheckBox mnemonicParsing="false" text="0010" />
+                                    <CheckBox mnemonicParsing="false" text="0011" />
+                                    <CheckBox mnemonicParsing="false" text="0012" />
+                                    <CheckBox mnemonicParsing="false" text="0013" />
+                                    <CheckBox mnemonicParsing="false" text="0020" />
+                                    <CheckBox mnemonicParsing="false" text="0021" />
+                                    <CheckBox mnemonicParsing="false" text="0022" />
+                                    <CheckBox mnemonicParsing="false" text="0023" />
+                                    <CheckBox mnemonicParsing="false" text="0030" />
+                                    <CheckBox mnemonicParsing="false" text="0031" />
+                                    <CheckBox mnemonicParsing="false" text="0032" />
+                                    <CheckBox mnemonicParsing="false" text="0033" />
+                                    <CheckBox mnemonicParsing="false" text="0100" />
+                                    <CheckBox mnemonicParsing="false" text="0101" />
+                                    <CheckBox mnemonicParsing="false" text="0102" />
+                                    <CheckBox mnemonicParsing="false" text="0103" />
+                                    <CheckBox mnemonicParsing="false" text="0110" />
+                                    <CheckBox mnemonicParsing="false" text="0111" />
+                                    <CheckBox mnemonicParsing="false" text="0112" />
+                                    <CheckBox mnemonicParsing="false" text="0113" />
+                                    <CheckBox mnemonicParsing="false" text="0120" />
+                                    <CheckBox mnemonicParsing="false" text="0121" />
+                                    <CheckBox mnemonicParsing="false" text="0122" />
+                                    <CheckBox mnemonicParsing="false" text="0123" />
+                                    <CheckBox mnemonicParsing="false" text="0130" />
+                                    <CheckBox mnemonicParsing="false" text="0131" />
+                                    <CheckBox mnemonicParsing="false" text="0132" />
+                                    <CheckBox mnemonicParsing="false" text="0133" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="0200" />
+                                    <CheckBox mnemonicParsing="false" text="0201" />
+                                    <CheckBox mnemonicParsing="false" text="0202" />
+                                    <CheckBox mnemonicParsing="false" text="0203" />
+                                    <CheckBox mnemonicParsing="false" text="0210" />
+                                    <CheckBox mnemonicParsing="false" text="0211" />
+                                    <CheckBox mnemonicParsing="false" text="0212" />
+                                    <CheckBox mnemonicParsing="false" text="0213" />
+                                    <CheckBox mnemonicParsing="false" text="0220" />
+                                    <CheckBox mnemonicParsing="false" text="0221" />
+                                    <CheckBox mnemonicParsing="false" text="0222" />
+                                    <CheckBox mnemonicParsing="false" text="0223" />
+                                    <CheckBox mnemonicParsing="false" text="0230" />
+                                    <CheckBox mnemonicParsing="false" text="0231" />
+                                    <CheckBox mnemonicParsing="false" text="0232" />
+                                    <CheckBox mnemonicParsing="false" text="0233" />
+                                    <CheckBox mnemonicParsing="false" text="0300" />
+                                    <CheckBox mnemonicParsing="false" text="0301" />
+                                    <CheckBox mnemonicParsing="false" text="0302" />
+                                    <CheckBox mnemonicParsing="false" text="0303" />
+                                    <CheckBox mnemonicParsing="false" text="0310" />
+                                    <CheckBox mnemonicParsing="false" text="0311" />
+                                    <CheckBox mnemonicParsing="false" text="0312" />
+                                    <CheckBox mnemonicParsing="false" text="0313" />
+                                    <CheckBox mnemonicParsing="false" text="0320" />
+                                    <CheckBox mnemonicParsing="false" text="0321" />
+                                    <CheckBox mnemonicParsing="false" text="0322" />
+                                    <CheckBox mnemonicParsing="false" text="0323" />
+                                    <CheckBox mnemonicParsing="false" text="0330" />
+                                    <CheckBox mnemonicParsing="false" text="0331" />
+                                    <CheckBox mnemonicParsing="false" text="0332" />
+                                    <CheckBox mnemonicParsing="false" text="0333" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="1000" />
+                                    <CheckBox mnemonicParsing="false" text="1001" />
+                                    <CheckBox mnemonicParsing="false" text="1002" />
+                                    <CheckBox mnemonicParsing="false" text="1003" />
+                                    <CheckBox mnemonicParsing="false" text="1010" />
+                                    <CheckBox mnemonicParsing="false" text="1011" />
+                                    <CheckBox mnemonicParsing="false" text="1012" />
+                                    <CheckBox mnemonicParsing="false" text="1013" />
+                                    <CheckBox mnemonicParsing="false" text="1020" />
+                                    <CheckBox mnemonicParsing="false" text="1021" />
+                                    <CheckBox mnemonicParsing="false" text="1022" />
+                                    <CheckBox mnemonicParsing="false" text="1023" />
+                                    <CheckBox mnemonicParsing="false" text="1030" />
+                                    <CheckBox mnemonicParsing="false" text="1031" />
+                                    <CheckBox mnemonicParsing="false" text="1032" />
+                                    <CheckBox mnemonicParsing="false" text="1033" />
+                                    <CheckBox mnemonicParsing="false" text="1100" />
+                                    <CheckBox mnemonicParsing="false" text="1101" />
+                                    <CheckBox mnemonicParsing="false" text="1102" />
+                                    <CheckBox mnemonicParsing="false" text="1103" />
+                                    <CheckBox mnemonicParsing="false" text="1110" />
+                                    <CheckBox mnemonicParsing="false" text="1111" />
+                                    <CheckBox mnemonicParsing="false" text="1112" />
+                                    <CheckBox mnemonicParsing="false" text="1113" />
+                                    <CheckBox mnemonicParsing="false" text="1120" />
+                                    <CheckBox mnemonicParsing="false" text="1121" />
+                                    <CheckBox mnemonicParsing="false" text="1122" />
+                                    <CheckBox mnemonicParsing="false" text="1123" />
+                                    <CheckBox mnemonicParsing="false" text="1130" />
+                                    <CheckBox mnemonicParsing="false" text="1131" />
+                                    <CheckBox mnemonicParsing="false" text="1132" />
+                                    <CheckBox mnemonicParsing="false" text="1133" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="1200" />
+                                    <CheckBox mnemonicParsing="false" text="1201" />
+                                    <CheckBox mnemonicParsing="false" text="1202" />
+                                    <CheckBox mnemonicParsing="false" text="1203" />
+                                    <CheckBox mnemonicParsing="false" text="1210" />
+                                    <CheckBox mnemonicParsing="false" text="1211" />
+                                    <CheckBox mnemonicParsing="false" text="1212" />
+                                    <CheckBox mnemonicParsing="false" text="1213" />
+                                    <CheckBox mnemonicParsing="false" text="1220" />
+                                    <CheckBox mnemonicParsing="false" text="1221" />
+                                    <CheckBox mnemonicParsing="false" text="1222" />
+                                    <CheckBox mnemonicParsing="false" text="1223" />
+                                    <CheckBox mnemonicParsing="false" text="1230" />
+                                    <CheckBox mnemonicParsing="false" text="1231" />
+                                    <CheckBox mnemonicParsing="false" text="1232" />
+                                    <CheckBox mnemonicParsing="false" text="1233" />
+                                    <CheckBox mnemonicParsing="false" text="1300" />
+                                    <CheckBox mnemonicParsing="false" text="1301" />
+                                    <CheckBox mnemonicParsing="false" text="1302" />
+                                    <CheckBox mnemonicParsing="false" text="1303" />
+                                    <CheckBox mnemonicParsing="false" text="1310" />
+                                    <CheckBox mnemonicParsing="false" text="1311" />
+                                    <CheckBox mnemonicParsing="false" text="1312" />
+                                    <CheckBox mnemonicParsing="false" text="1313" />
+                                    <CheckBox mnemonicParsing="false" text="1320" />
+                                    <CheckBox mnemonicParsing="false" text="1321" />
+                                    <CheckBox mnemonicParsing="false" text="1322" />
+                                    <CheckBox mnemonicParsing="false" text="1323" />
+                                    <CheckBox mnemonicParsing="false" text="1330" />
+                                    <CheckBox mnemonicParsing="false" text="1331" />
+                                    <CheckBox mnemonicParsing="false" text="1332" />
+                                    <CheckBox mnemonicParsing="false" text="1333" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="2000" />
+                                    <CheckBox mnemonicParsing="false" text="2001" />
+                                    <CheckBox mnemonicParsing="false" text="2002" />
+                                    <CheckBox mnemonicParsing="false" text="2003" />
+                                    <CheckBox mnemonicParsing="false" text="2010" />
+                                    <CheckBox mnemonicParsing="false" text="2011" />
+                                    <CheckBox mnemonicParsing="false" text="2012" />
+                                    <CheckBox mnemonicParsing="false" text="2013" />
+                                    <CheckBox mnemonicParsing="false" text="2020" />
+                                    <CheckBox mnemonicParsing="false" text="2021" />
+                                    <CheckBox mnemonicParsing="false" text="2022" />
+                                    <CheckBox mnemonicParsing="false" text="2023" />
+                                    <CheckBox mnemonicParsing="false" text="2030" />
+                                    <CheckBox mnemonicParsing="false" text="2031" />
+                                    <CheckBox mnemonicParsing="false" text="2032" />
+                                    <CheckBox mnemonicParsing="false" text="2033" />
+                                    <CheckBox mnemonicParsing="false" text="2100" />
+                                    <CheckBox mnemonicParsing="false" text="2101" />
+                                    <CheckBox mnemonicParsing="false" text="2102" />
+                                    <CheckBox mnemonicParsing="false" text="2103" />
+                                    <CheckBox mnemonicParsing="false" text="2110" />
+                                    <CheckBox mnemonicParsing="false" text="2111" />
+                                    <CheckBox mnemonicParsing="false" text="2112" />
+                                    <CheckBox mnemonicParsing="false" text="2113" />
+                                    <CheckBox mnemonicParsing="false" text="2120" />
+                                    <CheckBox mnemonicParsing="false" text="2121" />
+                                    <CheckBox mnemonicParsing="false" text="2122" />
+                                    <CheckBox mnemonicParsing="false" text="2123" />
+                                    <CheckBox mnemonicParsing="false" text="2130" />
+                                    <CheckBox mnemonicParsing="false" text="2131" />
+                                    <CheckBox mnemonicParsing="false" text="2132" />
+                                    <CheckBox mnemonicParsing="false" text="2133" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="2200" />
+                                    <CheckBox mnemonicParsing="false" text="2201" />
+                                    <CheckBox mnemonicParsing="false" text="2202" />
+                                    <CheckBox mnemonicParsing="false" text="2203" />
+                                    <CheckBox mnemonicParsing="false" text="2210" />
+                                    <CheckBox mnemonicParsing="false" text="2211" />
+                                    <CheckBox mnemonicParsing="false" text="2212" />
+                                    <CheckBox mnemonicParsing="false" text="2213" />
+                                    <CheckBox mnemonicParsing="false" text="2220" />
+                                    <CheckBox mnemonicParsing="false" text="2221" />
+                                    <CheckBox mnemonicParsing="false" text="2222" />
+                                    <CheckBox mnemonicParsing="false" text="2223" />
+                                    <CheckBox mnemonicParsing="false" text="2230" />
+                                    <CheckBox mnemonicParsing="false" text="2231" />
+                                    <CheckBox mnemonicParsing="false" text="2232" />
+                                    <CheckBox mnemonicParsing="false" text="2233" />
+                                    <CheckBox mnemonicParsing="false" text="2300" />
+                                    <CheckBox mnemonicParsing="false" text="2301" />
+                                    <CheckBox mnemonicParsing="false" text="2302" />
+                                    <CheckBox mnemonicParsing="false" text="2303" />
+                                    <CheckBox mnemonicParsing="false" text="2310" />
+                                    <CheckBox mnemonicParsing="false" text="2311" />
+                                    <CheckBox mnemonicParsing="false" text="2312" />
+                                    <CheckBox mnemonicParsing="false" text="2313" />
+                                    <CheckBox mnemonicParsing="false" text="2320" />
+                                    <CheckBox mnemonicParsing="false" text="2321" />
+                                    <CheckBox mnemonicParsing="false" text="2322" />
+                                    <CheckBox mnemonicParsing="false" text="2323" />
+                                    <CheckBox mnemonicParsing="false" text="2330" />
+                                    <CheckBox mnemonicParsing="false" text="2331" />
+                                    <CheckBox mnemonicParsing="false" text="2332" />
+                                    <CheckBox mnemonicParsing="false" text="2333" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="3000" />
+                                    <CheckBox mnemonicParsing="false" text="3001" />
+                                    <CheckBox mnemonicParsing="false" text="3002" />
+                                    <CheckBox mnemonicParsing="false" text="3003" />
+                                    <CheckBox mnemonicParsing="false" text="3010" />
+                                    <CheckBox mnemonicParsing="false" text="3011" />
+                                    <CheckBox mnemonicParsing="false" text="3012" />
+                                    <CheckBox mnemonicParsing="false" text="3013" />
+                                    <CheckBox mnemonicParsing="false" text="3020" />
+                                    <CheckBox mnemonicParsing="false" text="3021" />
+                                    <CheckBox mnemonicParsing="false" text="3022" />
+                                    <CheckBox mnemonicParsing="false" text="3023" />
+                                    <CheckBox mnemonicParsing="false" text="3030" />
+                                    <CheckBox mnemonicParsing="false" text="3031" />
+                                    <CheckBox mnemonicParsing="false" text="3032" />
+                                    <CheckBox mnemonicParsing="false" text="3033" />
+                                    <CheckBox mnemonicParsing="false" text="3100" />
+                                    <CheckBox mnemonicParsing="false" text="3101" />
+                                    <CheckBox mnemonicParsing="false" text="3102" />
+                                    <CheckBox mnemonicParsing="false" text="3103" />
+                                    <CheckBox mnemonicParsing="false" text="3110" />
+                                    <CheckBox mnemonicParsing="false" text="3111" />
+                                    <CheckBox mnemonicParsing="false" text="3112" />
+                                    <CheckBox mnemonicParsing="false" text="3113" />
+                                    <CheckBox mnemonicParsing="false" text="3120" />
+                                    <CheckBox mnemonicParsing="false" text="3121" />
+                                    <CheckBox mnemonicParsing="false" text="3122" />
+                                    <CheckBox mnemonicParsing="false" text="3123" />
+                                    <CheckBox mnemonicParsing="false" text="3130" />
+                                    <CheckBox mnemonicParsing="false" text="3131" />
+                                    <CheckBox mnemonicParsing="false" text="3132" />
+                                    <CheckBox mnemonicParsing="false" text="3133" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="3200" />
+                                    <CheckBox mnemonicParsing="false" text="3201" />
+                                    <CheckBox mnemonicParsing="false" text="3202" />
+                                    <CheckBox mnemonicParsing="false" text="3203" />
+                                    <CheckBox mnemonicParsing="false" text="3210" />
+                                    <CheckBox mnemonicParsing="false" text="3211" />
+                                    <CheckBox mnemonicParsing="false" text="3212" />
+                                    <CheckBox mnemonicParsing="false" text="3213" />
+                                    <CheckBox mnemonicParsing="false" text="3220" />
+                                    <CheckBox mnemonicParsing="false" text="3221" />
+                                    <CheckBox mnemonicParsing="false" text="3222" />
+                                    <CheckBox mnemonicParsing="false" text="3223" />
+                                    <CheckBox mnemonicParsing="false" text="3230" />
+                                    <CheckBox mnemonicParsing="false" text="3231" />
+                                    <CheckBox mnemonicParsing="false" text="3232" />
+                                    <CheckBox mnemonicParsing="false" text="3233" />
+                                    <CheckBox mnemonicParsing="false" text="3300" />
+                                    <CheckBox mnemonicParsing="false" text="3301" />
+                                    <CheckBox mnemonicParsing="false" text="3302" />
+                                    <CheckBox mnemonicParsing="false" text="3303" />
+                                    <CheckBox mnemonicParsing="false" text="3310" />
+                                    <CheckBox mnemonicParsing="false" text="3311" />
+                                    <CheckBox mnemonicParsing="false" text="3312" />
+                                    <CheckBox mnemonicParsing="false" text="3313" />
+                                    <CheckBox mnemonicParsing="false" text="3320" />
+                                    <CheckBox mnemonicParsing="false" text="3321" />
+                                    <CheckBox mnemonicParsing="false" text="3322" />
+                                    <CheckBox mnemonicParsing="false" text="3323" />
+                                    <CheckBox mnemonicParsing="false" text="3330" />
+                                    <CheckBox mnemonicParsing="false" text="3331" />
+                                    <CheckBox mnemonicParsing="false" text="3332" />
+                                    <CheckBox mnemonicParsing="false" text="3333" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+   </children>
+</AnchorPane>

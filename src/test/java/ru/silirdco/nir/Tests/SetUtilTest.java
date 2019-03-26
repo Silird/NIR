@@ -1,4 +1,4 @@
-package ru.SilirdCo.NIR.Tests;
+package ru.silirdco.nir.Tests;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,8 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import ru.SilirdCo.NIR.Entities.Element;
-import ru.SilirdCo.NIR.Util.SetUtil;
+import ru.silirdco.nir.core.entities.Element;
+import ru.silirdco.nir.core.util.SetUtil;
 
 public class SetUtilTest {
     private final static Logger logger = LoggerFactory.getLogger(SetUtilTest.class);

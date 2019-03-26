@@ -1,4 +1,4 @@
-package ru.SilirdCo.NIR.Util;
+package ru.silirdco.nir.core.util;
 
 @SuppressWarnings("unused")
 public class VarUtils {

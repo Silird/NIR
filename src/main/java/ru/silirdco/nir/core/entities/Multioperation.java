@@ -1,8 +1,10 @@
-package ru.SilirdCo.NIR.Entities;
+package ru.silirdco.nir.core.entities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.SilirdCo.NIR.Util.ExceptionHandler;
+import ru.silirdco.nir.core.util.ExceptionHandler;
+
+import java.util.Objects;
 
 public class Multioperation implements Comparable<Multioperation> {
     private final static Logger logger = LoggerFactory.getLogger(Multioperation.class);
@@ -121,17 +123,10 @@ public class Multioperation implements Comparable<Multioperation> {
         if((object == null) || (getClass()!= object.getClass())) return  false;
 
         Multioperation other = (Multioperation) object;
-        if ((this.oneOne == null) && (other.oneOne != null)) return false;
-        if  ((this.oneOne != null) && (!this.oneOne.equals(other.oneOne))) return false;
-
-        if ((this.oneTwo == null) && (other.oneTwo != null)) return false;
-        if  ((this.oneTwo != null) && (!this.oneTwo.equals(other.oneTwo))) return false;
-
-        if ((this.twoOne == null) && (other.twoOne != null)) return false;
-        if  ((this.twoOne != null) && (!this.twoOne.equals(other.twoOne))) return false;
-
-        if ((this.twoTwo == null) && (other.twoTwo != null)) return false;
-        if  ((this.twoTwo != null) && (!this.twoTwo.equals(other.twoTwo))) return false;
+        if (!Objects.equals(this.oneOne, other.oneOne)) return false;
+        if (!Objects.equals(this.oneTwo, other.oneTwo)) return false;
+        if (!Objects.equals(this.twoOne, other.twoOne)) return false;
+        if (!Objects.equals(this.twoTwo, other.twoTwo)) return false;
 
         return true;
     }

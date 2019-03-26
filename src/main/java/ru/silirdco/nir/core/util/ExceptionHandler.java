@@ -1,4 +1,4 @@
-package ru.SilirdCo.NIR.Util;
+package ru.silirdco.nir.core.util;
 
 import org.slf4j.Logger;
 

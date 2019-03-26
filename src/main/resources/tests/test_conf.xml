@@ -4,13 +4,13 @@
 
     <test name="Set">
         <classes>
-            <class name="ru.SilirdCo.NIR.Tests.SetUtilTest"/>
+            <class name="SetUtilTest"/>
         </classes>
     </test>
 
     <test name="Multioperation">
         <classes>
-            <class name="ru.SilirdCo.NIR.Tests.MultioperationUtilTest"/>
+            <class name="MultioperationUtilTest"/>
         </classes>
     </test>
 

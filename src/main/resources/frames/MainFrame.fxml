@@ -15,10 +15,12 @@
             <VBox prefHeight="200.0" spacing="10.0" HBox.hgrow="SOMETIMES">
                <children>
                   <Button fx:id="butCalculate" mnemonicParsing="false" text="Посчитать" />
+                  <Button fx:id="butUndo" mnemonicParsing="false" text="Откат" />
                   <CheckBox fx:id="checkNull" mnemonicParsing="false" text="Нулевой элемент" />
                   <CheckBox fx:id="checkOne" mnemonicParsing="false" text="Единичный элемент" />
                   <CheckBox fx:id="checkUniversal" mnemonicParsing="false" text="Универсальный элемент" />
                   <CheckBox fx:id="checkSubstitution" mnemonicParsing="false" text="Подстановка на 1 элемент" />
+                  <CheckBox fx:id="checkSuperposition" mnemonicParsing="false" text="Суперпозиция" />
                   <CheckBox fx:id="checkMegaoperation" mnemonicParsing="false" text="Оператор разрешимости" />
                   <CheckBox fx:id="checkCross" mnemonicParsing="false" text="Пересечение" />
                   <CheckBox fx:id="checkUnion" mnemonicParsing="false" text="Объединение" />

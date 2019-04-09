@@ -17,11 +17,14 @@ import ru.silirdco.nir.core.util.MultioperationUtil;
 import java.net.URL;
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class MainFrameController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(MainFrameController.class);
 
     @FXML
     private Button butCalculate;
+    @FXML
+    private Button butUndo;
     @FXML
     private CheckBox checkNull;
     @FXML
@@ -33,6 +36,8 @@ public class MainFrameController implements Initializable {
     @FXML
     private CheckBox checkMegaoperation;
     @FXML
+    private CheckBox checkSuperposition;
+    @FXML
     private CheckBox checkCross;
     @FXML
     private CheckBox checkUnion;
@@ -40,7 +45,6 @@ public class MainFrameController implements Initializable {
     private CheckBox checkAddition;
     @FXML
     private CheckBox checkTransposition;
-
 
     @FXML
     private TextField textMeassage;
@@ -53,6 +57,8 @@ public class MainFrameController implements Initializable {
 
     private List<CheckBox> checkBoxesMultioperations;
 
+    private List<String> undoList = new ArrayList<>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCheckBoxes();
@@ -60,9 +66,7 @@ public class MainFrameController implements Initializable {
     }
 
     private void initListeners() {
-        butCalculate.setOnAction(event -> {
-            calculate();
-        });
+        butCalculate.setOnAction(event -> calculate());
 
         butClear.setOnAction(event -> {
             for (CheckBox checkBox : checkBoxesMultioperations) {
@@ -70,21 +74,47 @@ public class MainFrameController implements Initializable {
             }
         });
 
-        checkNull.selectedProperty().bindBidirectional(getCheckBox("0000").selectedProperty());
-        checkOne.selectedProperty().bindBidirectional(getCheckBox("1122").selectedProperty());
-        checkUniversal.selectedProperty().bindBidirectional(getCheckBox("3333").selectedProperty());
+        butUndo.setOnAction(event -> {
+            if (!undoList.isEmpty()) {
+                clearCheckBoxes();
+                for (CheckBox checkBox : getCheckBoxes(undoList)) {
+                    checkBox.setSelected(true);
+                }
+                undoList.clear();
+            }
+        });
+
+//        checkNull.selectedProperty().bindBidirectional(getCheckBox("0000").selectedProperty());
+//        checkOne.selectedProperty().bindBidirectional(getCheckBox("1122").selectedProperty());
+//        checkUniversal.selectedProperty().bindBidirectional(getCheckBox("3333").selectedProperty());
     }
 
     private void calculate() {
         List<String> vectors = getCheckedMultioperations();
+        undoList.addAll(vectors);
         Set<Multioperation> multioperations = new TreeSet<>();
         for (String vector : vectors) {
             multioperations.add(new Multioperation(vector));
         }
 
+        if (checkNull.isSelected()) {
+            multioperations.add(new Multioperation("0000"));
+        }
+        if (checkOne.isSelected()) {
+            multioperations.add(new Multioperation("1122"));
+        }
+        if (checkUniversal.isSelected()) {
+            multioperations.add(new Multioperation("3333"));
+        }
+
         Set<Multioperation> newMultioperations = new TreeSet<>();
         do {
             multioperations.addAll(newMultioperations);
+            int left = 256 - multioperations.size();
+            if (left <= 0) {
+                break;
+            }
+
             newMultioperations.clear();
 
             if (checkTransposition.isSelected()) {
@@ -159,6 +189,22 @@ public class MainFrameController implements Initializable {
                         newMultioperations.add(newMultioperation);
                     }
                 });
+
+                if (!newMultioperations.isEmpty()) {
+                    continue;
+                }
+            }
+
+            if (checkSuperposition.isSelected()) {
+                EnumerationUtil.enumerate(3, multioperations, threeList -> {
+                    Multioperation newMultioperation = MultioperationUtil.getSuperposition(
+                            threeList.get(0),
+                            threeList.get(1),
+                            threeList.get(2));
+                    if (!multioperations.contains(newMultioperation)) {
+                        newMultioperations.add(newMultioperation);
+                    }
+                });
             }
         }
         while (!newMultioperations.isEmpty());
@@ -218,5 +264,11 @@ public class MainFrameController implements Initializable {
         }
 
         return checkBoxes;
+    }
+
+    private void clearCheckBoxes() {
+        for (CheckBox checkBox : checkBoxesMultioperations) {
+            checkBox.setSelected(false);
+        }
     }
 }

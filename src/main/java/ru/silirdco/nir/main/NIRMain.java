@@ -40,60 +40,73 @@ public class NIRMain {
         start.add(Multioperation.E12);
         start.add(Multioperation.E22);
         start.add(Multioperation.FULL);
-        findAlgebra(start, multioperations);
+        findAlgebra(start, multioperations, new HashMap<>());
 
         WriteUtil.print(resultList);
     }
 
-    private static void findAlgebra(List<Multioperation> startList, List<Multioperation> multioperations) {
+    private static List<Multioperation> findAlgebra(List<Multioperation> startList, List<Multioperation> multioperations,
+                                    Map<Multioperation, List<Multioperation>> knownDependencies) {
         logger.info("Новый поиск по множеству с количеством: " + startList.size());
-        
-        checkAlgebra(startList);
+
+        List<Multioperation> result = checkAlgebra(startList, knownDependencies);
 
         addToResult(startList);
 
         if (startList.size() != 256) {
             if (!testContainList(checkedList, startList)) {
+                Map<Multioperation, List<Multioperation>> kD = new HashMap<>();
                 for (Multioperation multioperation : multioperations) {
                     if (!startList.contains(multioperation)) {
                         List<Multioperation> newList = new ArrayList<>(startList);
                         newList.add(multioperation);
-                        findAlgebra(newList, multioperations);
+                        List<Multioperation> k = findAlgebra(newList, multioperations, kD);
+
+                        kD.put(multioperation, k);
                     }
                 }
 
                 checkedList.add(startList);
             }
         }
+
+        return result;
     }
 
-    private static void checkAlgebra(List<Multioperation> startList) {
-        TreeSet<Multioperation> newMultioperations = new TreeSet<>();
+    private static List<Multioperation> checkAlgebra(List<Multioperation> startList,
+                                     Map<Multioperation, List<Multioperation>> knownDependencies) {
+        List<Multioperation> result = new ArrayList<>();
+        if (startList.size() != 256) {
+            TreeSet<Multioperation> newMultioperations = new TreeSet<>();
 
-        for (Multioperation multioperation : startList) {
-            Multioperation firstMegaoperation = MultioperationUtil.getFirstMegaoperation(multioperation);
-            if (!startList.contains(firstMegaoperation)) {
-                newMultioperations.add(firstMegaoperation);
+            for (Multioperation multioperation : startList) {
+                Multioperation firstMegaoperation = MultioperationUtil.getFirstMegaoperation(multioperation);
+                if (!startList.contains(firstMegaoperation)) {
+                    newMultioperations.add(firstMegaoperation);
+                }
+
+                Multioperation secondMegaoperation = MultioperationUtil.getSecondMegaoperation(multioperation);
+                if (!startList.contains(secondMegaoperation)) {
+                    newMultioperations.add(secondMegaoperation);
+                }
             }
 
-            Multioperation secondMegaoperation = MultioperationUtil.getSecondMegaoperation(multioperation);
-            if (!startList.contains(secondMegaoperation)) {
-                newMultioperations.add(secondMegaoperation);
+            EnumerationUtil.enumerate(3, startList, multioperations -> {
+                Multioperation superposition = MultioperationUtil
+                        .getSuperposition(multioperations.get(0), multioperations.get(1), multioperations.get(2));
+                if (!startList.contains(superposition)) {
+                    newMultioperations.add(superposition);
+                }
+            });
+
+            if (newMultioperations.size() != 0) {
+                result.addAll(newMultioperations);
+                addNonContain(startList, checkKnown(newMultioperations, knownDependencies));
+                result.addAll(checkAlgebra(startList, knownDependencies));
             }
         }
 
-        EnumerationUtil.enumerate(3, startList, multioperations -> {
-            Multioperation superposition = MultioperationUtil
-                    .getSuperposition(multioperations.get(0), multioperations.get(1), multioperations.get(2));
-            if (!startList.contains(superposition)) {
-                newMultioperations.add(superposition);
-            }
-        });
-
-        if (newMultioperations.size() != 0) {
-            startList.addAll(newMultioperations);
-            checkAlgebra(startList);
-        }
+        return result;
     }
 
     private static void addToResult(List<Multioperation> multioperations) {
@@ -127,5 +140,35 @@ public class NIRMain {
         }
 
         return false;
+    }
+
+    private static Collection<Multioperation> checkKnown(Collection<Multioperation> newMultioperations,
+                                                   Map<Multioperation, List<Multioperation>> knownDependencies) {
+        Collection<Multioperation> result = new TreeSet<>();
+
+        for (Multioperation multioperation : newMultioperations) {
+            result.add(multioperation);
+            for (Multioperation key : knownDependencies.keySet()) {
+                if (multioperation.equals(key)) {
+                    result.addAll(knownDependencies.get(key));
+                }
+            }
+            if (result.size() == 256) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private static void addNonContain(Collection<Multioperation> list, Collection<Multioperation> newList) {
+        for (Multioperation multioperation : newList) {
+            if (!list.contains(multioperation)) {
+                list.add(multioperation);
+                if (list.size() == 256) {
+                    break;
+                }
+            }
+        }
     }
 }

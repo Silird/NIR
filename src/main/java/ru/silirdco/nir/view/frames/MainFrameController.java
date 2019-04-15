@@ -1,10 +1,13 @@
 package ru.silirdco.nir.view.frames;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import ru.silirdco.nir.core.entities.Multioperation;
 import ru.silirdco.nir.core.util.EnumerationUtil;
 import ru.silirdco.nir.core.util.MultioperationUtil;
+import ru.silirdco.nir.core.util.VarUtils;
 
 import java.net.URL;
 import java.util.*;
@@ -47,6 +51,9 @@ public class MainFrameController implements Initializable {
     private CheckBox checkTransposition;
 
     @FXML
+    private Label labelCount;
+
+    @FXML
     private TextField textMeassage;
     @FXML
     private Button butClear;
@@ -58,6 +65,8 @@ public class MainFrameController implements Initializable {
     private List<CheckBox> checkBoxesMultioperations;
 
     private List<String> undoList = new ArrayList<>();
+
+    private IntegerProperty selectCountProperty = new SimpleIntegerProperty(0);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,9 +93,29 @@ public class MainFrameController implements Initializable {
             }
         });
 
+        selectCountProperty.addListener((observable, oldValue, newValue) -> {
+            labelCount.setText(String.valueOf(VarUtils.getInteger((Integer) newValue)));
+        });
+
+        addCountListeners();
 //        checkNull.selectedProperty().bindBidirectional(getCheckBox("0000").selectedProperty());
 //        checkOne.selectedProperty().bindBidirectional(getCheckBox("1122").selectedProperty());
 //        checkUniversal.selectedProperty().bindBidirectional(getCheckBox("3333").selectedProperty());
+    }
+
+    private void addCountListeners() {
+        for (CheckBox checkBox : checkBoxesMultioperations) {
+            checkBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+               if ((oldValue != null) && (newValue != null)) {
+                   if (newValue && !oldValue) {
+                       selectCountProperty.setValue(selectCountProperty.get() + 1);
+                   }
+                   else if (!newValue && oldValue) {
+                       selectCountProperty.setValue(selectCountProperty.get() - 1);
+                   }
+               }
+            }));
+        }
     }
 
     private void calculate() {
@@ -102,6 +131,7 @@ public class MainFrameController implements Initializable {
         }
         if (checkOne.isSelected()) {
             multioperations.add(new Multioperation("1122"));
+            multioperations.add(new Multioperation("1212"));
         }
         if (checkUniversal.isSelected()) {
             multioperations.add(new Multioperation("3333"));

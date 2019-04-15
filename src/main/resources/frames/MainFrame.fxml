@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -17,7 +18,7 @@
                   <Button fx:id="butCalculate" mnemonicParsing="false" text="Посчитать" />
                   <Button fx:id="butUndo" mnemonicParsing="false" text="Откат" />
                   <CheckBox fx:id="checkNull" mnemonicParsing="false" text="Нулевой элемент" />
-                  <CheckBox fx:id="checkOne" mnemonicParsing="false" text="Единичный элемент" />
+                  <CheckBox fx:id="checkOne" mnemonicParsing="false" text="Проекции" />
                   <CheckBox fx:id="checkUniversal" mnemonicParsing="false" text="Универсальный элемент" />
                   <CheckBox fx:id="checkSubstitution" mnemonicParsing="false" text="Подстановка на 1 элемент" />
                   <CheckBox fx:id="checkSuperposition" mnemonicParsing="false" text="Суперпозиция" />
@@ -26,6 +27,16 @@
                   <CheckBox fx:id="checkUnion" mnemonicParsing="false" text="Объединение" />
                   <CheckBox fx:id="checkAddition" mnemonicParsing="false" text="Дополнение" />
                   <CheckBox fx:id="checkTransposition" mnemonicParsing="false" text="Транспозиция" />
+                  <VBox alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                           <children>
+                              <Label text="Выделено:" />
+                              <Label fx:id="labelCount" text="0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">

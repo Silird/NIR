@@ -1,29 +1,32 @@
 package ru.silirdco.nir.view.frames;
 
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.silirdco.nir.core.entities.Multioperation;
 import ru.silirdco.nir.core.util.EnumerationUtil;
 import ru.silirdco.nir.core.util.MultioperationUtil;
 import ru.silirdco.nir.core.util.VarUtils;
+import ru.silirdco.nir.view.util.Structure;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
-// TODO: Индикаторы что проиходит просчёт
-// TODO: Проблемы с откатом, если 2 раза назать посчитать
-// TODO: Выделение цветами операции (с 1 и 2) квазиоперации (с 1, 2 и 0) и гипероперации (с 1, 2, 3)
 // TODO: Сохранение результатов
 
 @SuppressWarnings("unused")
@@ -59,28 +62,59 @@ public class MainFrameController implements Initializable {
     private Label labelCount;
 
     @FXML
-    private TextField textMeassage;
+    private ProgressBar progressBar;
     @FXML
     private Button butClear;
 
+    @FXML
+    private Label labelSelected;
+    @FXML
+    private Button butRestoreInitial;
+    @FXML
+    private Button butRestoreFinal;
+    @FXML
+    private TableView<SavedIteration> table;
 
     @FXML
     private HBox hboxMultioperations;
 
     private List<CheckBox> checkBoxesMultioperations;
 
-    private List<String> undoList = new ArrayList<>();
+    private SavedIteration lastIteration;
+
+    private ObjectProperty<SavedIteration> selectedIterationProperty = new SimpleObjectProperty<>();
 
     private IntegerProperty selectCountProperty = new SimpleIntegerProperty(0);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initTable();
         initCheckBoxes();
         initListeners();
     }
 
+    private void initTable() {
+        TableColumn<SavedIteration, String> column = new TableColumn<>();
+        table.getColumns().add(column);
+
+        column.setText("Итерации");
+        column.setCellValueFactory(param -> new SimpleObjectProperty<>(Structure.formatDateTime.format(param.getValue().getDate())));
+
+        table.setPlaceholder(new Label());
+    }
+
     private void initListeners() {
-        butCalculate.setOnAction(event -> calculate());
+        butCalculate.setOnAction(event -> {
+            butCalculate.setDisable(true);
+            progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            CompletableFuture.runAsync(() -> {
+                calculate();
+                Platform.runLater(() -> {
+                    progressBar.setProgress(0);
+                    butCalculate.setDisable(false);
+                });
+            });
+        });
 
         butClear.setOnAction(event -> {
             for (CheckBox checkBox : checkBoxesMultioperations) {
@@ -89,17 +123,64 @@ public class MainFrameController implements Initializable {
         });
 
         butUndo.setOnAction(event -> {
-            if (!undoList.isEmpty()) {
+            if (lastIteration != null) {
                 clearCheckBoxes();
-                for (CheckBox checkBox : getCheckBoxes(undoList)) {
+                for (CheckBox checkBox : getCheckBoxes(lastIteration.getInitialMultioperations())) {
                     checkBox.setSelected(true);
                 }
-                undoList.clear();
+                lastIteration = null;
             }
         });
 
-        selectCountProperty.addListener((observable, oldValue, newValue) -> {
-            labelCount.setText(String.valueOf(VarUtils.getInteger((Integer) newValue)));
+        selectCountProperty.addListener((observable, oldValue, newValue) ->
+                labelCount.setText(String.valueOf(VarUtils.getInteger((Integer) newValue))));
+
+        selectedIterationProperty.addListener(((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                if (newValue != null) {
+                    labelSelected.setText(Structure.formatDateTime.format(newValue.getDate()));
+                    butRestoreInitial.setDisable(false);
+                    butRestoreFinal.setDisable(false);
+                }
+                else {
+                    labelSelected.setText("");
+                    butRestoreInitial.setDisable(true);
+                    butRestoreFinal.setDisable(true);
+                }
+            });
+        }));
+
+        butRestoreInitial.setOnAction(event -> {
+            if (selectedIterationProperty.get() != null) {
+                clearCheckBoxes();
+                for (String multioperation : selectedIterationProperty.get().getInitialMultioperations()) {
+                    getCheckBox(multioperation).setSelected(true);
+                }
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
+                alert.showAndWait();
+            }
+        });
+
+        butRestoreFinal.setOnAction(event -> {
+            if (selectedIterationProperty.get() != null) {
+                clearCheckBoxes();
+                for (String multioperation : selectedIterationProperty.get().getFinalMultioperations()) {
+                    getCheckBox(multioperation).setSelected(true);
+                }
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
+                alert.showAndWait();
+            }
+        });
+
+        //двойной клик
+        table.setOnMouseClicked(t -> {
+            if (t.getClickCount() == 1 && !table.getSelectionModel().isEmpty()) {
+                selectedIterationProperty.setValue(table.getSelectionModel().getSelectedItem());
+            }
         });
 
         addCountListeners();
@@ -124,8 +205,13 @@ public class MainFrameController implements Initializable {
     }
 
     private void calculate() {
+        lastIteration = new SavedIteration();
+        lastIteration.setDate(new Date());
+        lastIteration.setInitialMultioperations(new ArrayList<>());
+        lastIteration.setFinalMultioperations(new ArrayList<>());
+
         List<String> vectors = getCheckedMultioperations();
-        undoList.addAll(vectors);
+        lastIteration.getInitialMultioperations().addAll(vectors);
         Set<Multioperation> multioperations = new TreeSet<>();
         for (String vector : vectors) {
             multioperations.add(new Multioperation(vector));
@@ -244,9 +330,17 @@ public class MainFrameController implements Initializable {
         }
         while (!newMultioperations.isEmpty());
 
+
         for (Multioperation multioperation : multioperations) {
-            getCheckBox(multioperation.toStringVector()).setSelected(true);
+            lastIteration.getFinalMultioperations().add(multioperation.toStringVector());
         }
+        selectedIterationProperty.setValue(lastIteration);
+        Platform.runLater(() -> {
+            table.getItems().add(lastIteration);
+            for (Multioperation multioperation : multioperations) {
+                getCheckBox(multioperation.toStringVector()).setSelected(true);
+            }
+        });
     }
 
     private void initCheckBoxes() {
@@ -259,6 +353,29 @@ public class MainFrameController implements Initializable {
                     }
                 }
             }
+        }
+
+        List<String> accessors = new ArrayList<>();
+        accessors.add("0");
+        accessors.add("1");
+        accessors.add("2");
+        for (CheckBox checkBox : getCheckBoxesAccessors(accessors)) {
+            checkBox.setTextFill(Color.BLUE);
+        }
+
+        accessors.clear();
+        accessors.add("3");
+        accessors.add("1");
+        accessors.add("2");
+        for (CheckBox checkBox : getCheckBoxesAccessors(accessors)) {
+            checkBox.setTextFill(Color.RED);
+        }
+
+        accessors.clear();
+        accessors.add("1");
+        accessors.add("2");
+        for (CheckBox checkBox : getCheckBoxesAccessors(accessors)) {
+            checkBox.setTextFill(Color.PURPLE);
         }
     }
 
@@ -299,6 +416,26 @@ public class MainFrameController implements Initializable {
         }
 
         return checkBoxes;
+    }
+
+    private List<CheckBox> getCheckBoxesAccessors(Collection<String> accessors) {
+        List<CheckBox> checkBoxes = new ArrayList<>();
+        for (CheckBox checkBox : checkBoxesMultioperations) {
+            if (containOnly(checkBox.getText(), accessors)) {
+                checkBoxes.add(checkBox);
+            }
+        }
+
+        return checkBoxes;
+    }
+
+    private boolean containOnly(String target, Collection<String> accessors) {
+        for (int i = 0; i < target.length(); i++) {
+            if (!accessors.contains(target.substring(i, i + 1))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void clearCheckBoxes() {

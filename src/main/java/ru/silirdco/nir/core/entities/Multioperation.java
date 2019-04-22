@@ -6,6 +6,7 @@ import ru.silirdco.nir.core.util.ExceptionHandler;
 
 import java.util.Objects;
 
+@SuppressWarnings("WeakerAccess")
 public class Multioperation implements Comparable<Multioperation> {
     private final static Logger logger = LoggerFactory.getLogger(Multioperation.class);
 

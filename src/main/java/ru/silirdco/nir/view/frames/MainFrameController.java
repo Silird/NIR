@@ -21,6 +21,11 @@ import ru.silirdco.nir.core.util.VarUtils;
 import java.net.URL;
 import java.util.*;
 
+// TODO: Индикаторы что проиходит просчёт
+// TODO: Проблемы с откатом, если 2 раза назать посчитать
+// TODO: Выделение цветами операции (с 1 и 2) квазиоперации (с 1, 2 и 0) и гипероперации (с 1, 2, 3)
+// TODO: Сохранение результатов
+
 @SuppressWarnings("unused")
 public class MainFrameController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(MainFrameController.class);

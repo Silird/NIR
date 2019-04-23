@@ -5,24 +5,29 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.silirdco.nir.core.entities.Multioperation;
 import ru.silirdco.nir.core.util.EnumerationUtil;
+import ru.silirdco.nir.core.util.ExceptionHandler;
 import ru.silirdco.nir.core.util.MultioperationUtil;
 import ru.silirdco.nir.core.util.VarUtils;
+import ru.silirdco.nir.view.util.FileUtil;
 import ru.silirdco.nir.view.util.Structure;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -73,6 +78,12 @@ public class MainFrameController implements Initializable {
     @FXML
     private Button butRestoreFinal;
     @FXML
+    private Button butRemove;
+    @FXML
+    private Button butSave;
+    @FXML
+    private Button butLoad;
+    @FXML
     private TableView<SavedIteration> table;
 
     @FXML
@@ -98,7 +109,8 @@ public class MainFrameController implements Initializable {
         table.getColumns().add(column);
 
         column.setText("Итерации");
-        column.setCellValueFactory(param -> new SimpleObjectProperty<>(Structure.formatDateTime.format(param.getValue().getDate())));
+        column.setCellValueFactory(new PropertyValueFactory<>("name"));
+        //column.setCellValueFactory(param -> new SimpleObjectProperty<>(Structure.formatDateTime.format(param.getValue().getName())));
 
         table.setPlaceholder(new Label());
     }
@@ -138,24 +150,40 @@ public class MainFrameController implements Initializable {
         selectedIterationProperty.addListener(((observable, oldValue, newValue) -> {
             Platform.runLater(() -> {
                 if (newValue != null) {
-                    labelSelected.setText(Structure.formatDateTime.format(newValue.getDate()));
+                    labelSelected.setText(newValue.getName());
                     butRestoreInitial.setDisable(false);
                     butRestoreFinal.setDisable(false);
+                    butRemove.setDisable(false);
+                    butSave.setDisable(false);
                 }
                 else {
                     labelSelected.setText("");
                     butRestoreInitial.setDisable(true);
                     butRestoreFinal.setDisable(true);
+                    butRemove.setDisable(true);
+                    butSave.setDisable(true);
                 }
             });
         }));
 
         butRestoreInitial.setOnAction(event -> {
-            if (selectedIterationProperty.get() != null) {
+            SavedIteration selectedIteration = selectedIterationProperty.get();
+            if (selectedIteration != null) {
                 clearCheckBoxes();
-                for (String multioperation : selectedIterationProperty.get().getInitialMultioperations()) {
+                for (String multioperation : selectedIteration.getInitialMultioperations()) {
                     getCheckBox(multioperation).setSelected(true);
                 }
+
+                checkNull.setSelected(selectedIteration.isNulll());
+                checkOne.setSelected(selectedIteration.isOne());
+                checkUniversal.setSelected(selectedIteration.isUniversal());
+                checkSubstitution.setSelected(selectedIteration.isSubstitution());
+                checkMegaoperation.setSelected(selectedIteration.isMegaoperation());
+                checkSuperposition.setSelected(selectedIteration.isSuperposition());
+                checkCross.setSelected(selectedIteration.isCross());
+                checkUnion.setSelected(selectedIteration.isUnion());
+                checkAddition.setSelected(selectedIteration.isAddition());
+                checkTransposition.setSelected(selectedIteration.isTransposition());
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
@@ -164,10 +192,55 @@ public class MainFrameController implements Initializable {
         });
 
         butRestoreFinal.setOnAction(event -> {
-            if (selectedIterationProperty.get() != null) {
+            SavedIteration selectedIteration = selectedIterationProperty.get();
+            if (selectedIteration != null) {
                 clearCheckBoxes();
-                for (String multioperation : selectedIterationProperty.get().getFinalMultioperations()) {
+                for (String multioperation : selectedIteration.getFinalMultioperations()) {
                     getCheckBox(multioperation).setSelected(true);
+                }
+
+                checkNull.setSelected(selectedIteration.isNulll());
+                checkOne.setSelected(selectedIteration.isOne());
+                checkUniversal.setSelected(selectedIteration.isUniversal());
+                checkSubstitution.setSelected(selectedIteration.isSubstitution());
+                checkMegaoperation.setSelected(selectedIteration.isMegaoperation());
+                checkSuperposition.setSelected(selectedIteration.isSuperposition());
+                checkCross.setSelected(selectedIteration.isCross());
+                checkUnion.setSelected(selectedIteration.isUnion());
+                checkAddition.setSelected(selectedIteration.isAddition());
+                checkTransposition.setSelected(selectedIteration.isTransposition());
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
+                alert.showAndWait();
+            }
+        });
+
+        butRemove.setOnAction(event -> {
+            SavedIteration selectedIteration = selectedIterationProperty.get();
+            if (selectedIteration != null) {
+                selectedIterationProperty.setValue(null);
+                table.getItems().remove(selectedIteration);
+                table.refresh();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
+                alert.showAndWait();
+            }
+        });
+
+        butSave.setOnAction(event -> {
+            SavedIteration selectedIteration = selectedIterationProperty.get();
+            if (selectedIteration != null) {
+                try {
+                    File file = FileUtil.getSaveFile();
+                    FileUtil.writeText(file, Structure.getGson().toJson(selectedIteration));
+                }
+                catch (IOException ex) {
+                    ExceptionHandler.handle(logger, ex);
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Ошибка сохранения файла");
+                    alert.showAndWait();
                 }
             }
             else {
@@ -176,10 +249,56 @@ public class MainFrameController implements Initializable {
             }
         });
 
-        //двойной клик
+        butLoad.setOnAction(event -> {
+            try {
+                File file = FileUtil.openFile();
+                if (file != null) {
+                    String iteration = FileUtil.readText(file);
+                    SavedIteration savedIteration = Structure.getGson().fromJson(iteration, SavedIteration.class);
+                    selectedIterationProperty.setValue(savedIteration);
+                    table.getItems().add(savedIteration);
+                }
+            }
+            catch (IOException ex) {
+                ExceptionHandler.handle(logger, ex);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Ошибка чтения файла");
+                alert.showAndWait();
+            }
+        });
+
         table.setOnMouseClicked(t -> {
             if (t.getClickCount() == 1 && !table.getSelectionModel().isEmpty()) {
                 selectedIterationProperty.setValue(table.getSelectionModel().getSelectedItem());
+            }
+        });
+
+        labelSelected.setOnMouseClicked(t -> {
+            if (t.getClickCount() == 2) {
+                Pane parent = (Pane) labelSelected.getParent();
+                parent.getChildren().remove(labelSelected);
+                TextField textField = new TextField();
+                textField.setText(labelSelected.getText());
+                parent.getChildren().add(textField);
+                textField.requestFocus();
+                textField.positionCaret(textField.getText().length() - 1);
+                textField.selectAll();
+                textField.setOnAction(event -> {
+                    selectedIterationProperty.get().setName(textField.getText());
+                    labelSelected.setText(textField.getText());
+                    parent.getChildren().remove(textField);
+                    parent.getChildren().add(labelSelected);
+                    table.refresh();
+                });
+                textField.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+                    if (!VarUtils.getBoolean(newValue) && parent.getChildren().contains(textField)) {
+                        selectedIterationProperty.get().setName(textField.getText());
+                        labelSelected.setText(textField.getText());
+                        parent.getChildren().remove(textField);
+                        parent.getChildren().add(labelSelected);
+                        table.refresh();
+                    }
+                }));
             }
         });
 
@@ -206,7 +325,7 @@ public class MainFrameController implements Initializable {
 
     private void calculate() {
         lastIteration = new SavedIteration();
-        lastIteration.setDate(new Date());
+        lastIteration.setName(Structure.formatDateTime.format(new Date()));
         lastIteration.setInitialMultioperations(new ArrayList<>());
         lastIteration.setFinalMultioperations(new ArrayList<>());
 
@@ -218,14 +337,39 @@ public class MainFrameController implements Initializable {
         }
 
         if (checkNull.isSelected()) {
+            lastIteration.setNulll(true);
             multioperations.add(new Multioperation("0000"));
         }
         if (checkOne.isSelected()) {
+            lastIteration.setOne(true);
             multioperations.add(new Multioperation("1122"));
             multioperations.add(new Multioperation("1212"));
         }
         if (checkUniversal.isSelected()) {
+            lastIteration.setUniversal(true);
             multioperations.add(new Multioperation("3333"));
+        }
+
+        if (checkTransposition.isSelected()) {
+            lastIteration.setTransposition(true);
+        }
+        if (checkAddition.isSelected()) {
+            lastIteration.setAddition(true);
+        }
+        if (checkMegaoperation.isSelected()) {
+            lastIteration.setMegaoperation(true);
+        }
+        if (checkCross.isSelected()) {
+            lastIteration.setCross(true);
+        }
+        if (checkUnion.isSelected()) {
+            lastIteration.setUnion(true);
+        }
+        if (checkSubstitution.isSelected()) {
+            lastIteration.setSubstitution(true);
+        }
+        if (checkSuperposition.isSelected()) {
+            lastIteration.setSuperposition(true);
         }
 
         Set<Multioperation> newMultioperations = new TreeSet<>();

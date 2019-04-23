@@ -33,11 +33,14 @@
                         <HBox spacing="5.0">
                            <children>
                               <Label text="Выбрана:" />
-                              <Label fx:id="labelSelected" />
+                              <Label fx:id="labelSelected" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                            </children>
                         </HBox>
                         <Button fx:id="butRestoreInitial" disable="true" mnemonicParsing="false" text="Восстаовить начальные" />
                         <Button fx:id="butRestoreFinal" disable="true" mnemonicParsing="false" text="Восстановить конечные" />
+                        <Button fx:id="butRemove" disable="true" mnemonicParsing="false" text="Удалить" />
+                        <Button fx:id="butSave" disable="true" mnemonicParsing="false" text="Сохранить" />
+                        <Button fx:id="butLoad" mnemonicParsing="false" text="Загрузить" />
                         <TableView fx:id="table" prefHeight="197.0" prefWidth="130.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -47,7 +50,7 @@
                   </VBox>
                   <VBox alignment="BOTTOM_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefWidth="100.0" VBox.vgrow="SOMETIMES">
                      <children>
-                        <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                        <HBox alignment="BOTTOM_LEFT" spacing="5.0">
                            <children>
                               <Label text="Выделено:" />
                               <Label fx:id="labelCount" text="0" />

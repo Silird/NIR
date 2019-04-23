@@ -15,6 +15,7 @@ public class MainJavaFX extends Application {
 
     private static MainFrameController mainFrameController;
     private static Node mainFrameNode;
+    private static Stage stage;
 
     public static void show(String[] args) {
         launch(args);
@@ -25,6 +26,7 @@ public class MainJavaFX extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/frames/MainFrame.fxml"));
         mainFrameController = new MainFrameController();
         loader.setController(mainFrameController);
+        stage = primaryStage;
 
         try {
             mainFrameNode = loader.load();
@@ -50,5 +52,9 @@ public class MainJavaFX extends Application {
 
     public static Node getMainFrameNode() {
         return mainFrameNode;
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 }

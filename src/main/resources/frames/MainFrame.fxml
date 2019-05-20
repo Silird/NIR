@@ -64,8 +64,9 @@
                <children>
                   <HBox prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
                      <children>
-                        <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="butClear" mnemonicParsing="false" text="Очистить" />
+                        <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="butCalculateClosedSet" mnemonicParsing="false" text="Посчитать замкнутые множества" />
                      </children>
                   </HBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">

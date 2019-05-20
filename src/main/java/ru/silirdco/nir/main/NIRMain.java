@@ -13,8 +13,8 @@ import java.util.*;
 public class NIRMain {
     private static final Logger logger = LoggerFactory.getLogger(NIRMain.class);
 
-    private static List<List<Multioperation>> resultList = new ArrayList<>();
-    private static List<List<Multioperation>> checkedList = new ArrayList<>();
+    private static Collection<Collection<Multioperation>> resultList = new ArrayList<>();
+    private static Collection<Collection<Multioperation>> checkedList = new ArrayList<>();
 
     public static void main(String[] args) {
         List<Element> list = new ArrayList<>();
@@ -109,6 +109,9 @@ public class NIRMain {
         return result;
     }
 
+    /*
+    Добавить алгебру в результат
+     */
     private static void addToResult(List<Multioperation> multioperations) {
         boolean isAdd = !testContainList(resultList, multioperations);
 
@@ -118,9 +121,11 @@ public class NIRMain {
         }
     }
 
-    private static boolean testEqualsLists(List<Multioperation> mL1, List<Multioperation> mL2) {
+    /*
+    Проверка на эквивалентность листов
+     */
+    private static boolean testEqualsLists(Collection<Multioperation> mL1, Collection<Multioperation> mL2) {
         if (mL1.size() == mL2.size()) {
-            boolean equals = true;
             for (Multioperation multioperation : mL1) {
                 if (!mL2.contains(multioperation)) {
                     return false;
@@ -132,8 +137,11 @@ public class NIRMain {
         return false;
     }
 
-    private static boolean testContainList(List<List<Multioperation>> list, List<Multioperation> mL2) {
-        for (List<Multioperation> mL : list) {
+    /*
+    Проверка содержится ли в листе данный лист
+     */
+    private static boolean testContainList(Collection<Collection<Multioperation>> list, Collection<Multioperation> mL2) {
+        for (Collection<Multioperation> mL : list) {
             if (testEqualsLists(mL, mL2)) {
                 return true;
             }
@@ -142,6 +150,9 @@ public class NIRMain {
         return false;
     }
 
+    /*
+    Добавить в новые мультиоперации все известные зависимости
+     */
     private static Collection<Multioperation> checkKnown(Collection<Multioperation> newMultioperations,
                                                    Map<Multioperation, List<Multioperation>> knownDependencies) {
         Collection<Multioperation> result = new TreeSet<>();

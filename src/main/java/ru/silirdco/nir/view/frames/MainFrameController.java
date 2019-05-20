@@ -5,24 +5,21 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.silirdco.nir.core.entities.Multioperation;
-import ru.silirdco.nir.core.util.EnumerationUtil;
-import ru.silirdco.nir.core.util.ExceptionHandler;
-import ru.silirdco.nir.core.util.MultioperationUtil;
-import ru.silirdco.nir.core.util.VarUtils;
+import ru.silirdco.nir.core.util.*;
+import ru.silirdco.nir.core.util.entity.Operations;
 import ru.silirdco.nir.view.util.FileUtil;
 import ru.silirdco.nir.view.util.Structure;
 
@@ -70,6 +67,8 @@ public class MainFrameController implements Initializable {
     private ProgressBar progressBar;
     @FXML
     private Button butClear;
+    @FXML
+    private Button butCalculateClosedSet;
 
     @FXML
     private Label labelSelected;
@@ -116,7 +115,67 @@ public class MainFrameController implements Initializable {
     }
 
     private void initListeners() {
+        butCalculateClosedSet.setOnAction(event -> {
+            butCalculateClosedSet.setDisable(true);
+            butCalculate.setDisable(true);
+            progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            CompletableFuture.runAsync(() -> {
+                Operations operations = new Operations();
+                if (checkNull.isSelected()) {
+                    operations.setNulll(true);
+                }
+                if (checkOne.isSelected()) {
+                    operations.setOne(true);
+                }
+                if (checkUniversal.isSelected()) {
+                    operations.setUniversal(true);
+                }
+
+                if (checkTransposition.isSelected()) {
+                    operations.setTransposition(true);
+                }
+                if (checkAddition.isSelected()) {
+                    operations.setAddition(true);
+                }
+                if (checkMegaoperation.isSelected()) {
+                    operations.setMegaoperation(true);
+                }
+                if (checkCross.isSelected()) {
+                    operations.setCross(true);
+                }
+                if (checkUnion.isSelected()) {
+                    operations.setUnion(true);
+                }
+                if (checkSubstitution.isSelected()) {
+                    operations.setSubstitution(true);
+                }
+                if (checkSuperposition.isSelected()) {
+                    operations.setSuperposition(true);
+                }
+
+                ChangeListener<? super Number> changeListener =
+                        (observable, oldValue, newValue) ->
+                                Platform.runLater(() ->
+                                        progressBar.setProgress(VarUtils.getDouble((Double) newValue)));
+                ClosedSetUtil.progressProperty.addListener((observable, oldValue, newValue) ->
+                        Platform.runLater(() ->
+                                progressBar.setProgress(VarUtils.getDouble((Double) newValue))));
+                //ClosedSetUtil.progressProperty.bind(progressBar.progressProperty());
+                //progressBar.progressProperty().bind(ClosedSetUtil.progressProperty);
+                Collection<Collection<Multioperation>> closedSets = ClosedSetUtil.getClosedSets(operations);
+                Platform.runLater(() -> {
+                    ClosedSetUtil.progressProperty.removeListener(changeListener);
+                    progressBar.setProgress(0);
+                    butCalculate.setDisable(false);
+                    butCalculateClosedSet.setDisable(false);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Количество замкнутых множеств: " + closedSets.size());
+                    alert.showAndWait();
+                });
+            });
+        });
+
         butCalculate.setOnAction(event -> {
+            butCalculateClosedSet.setDisable(true);
             butCalculate.setDisable(true);
             progressBar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
             CompletableFuture.runAsync(() -> {
@@ -124,6 +183,7 @@ public class MainFrameController implements Initializable {
                 Platform.runLater(() -> {
                     progressBar.setProgress(0);
                     butCalculate.setDisable(false);
+                    butCalculateClosedSet.setDisable(false);
                 });
             });
         });
@@ -174,16 +234,16 @@ public class MainFrameController implements Initializable {
                     getCheckBox(multioperation).setSelected(true);
                 }
 
-                checkNull.setSelected(selectedIteration.isNulll());
-                checkOne.setSelected(selectedIteration.isOne());
-                checkUniversal.setSelected(selectedIteration.isUniversal());
-                checkSubstitution.setSelected(selectedIteration.isSubstitution());
-                checkMegaoperation.setSelected(selectedIteration.isMegaoperation());
-                checkSuperposition.setSelected(selectedIteration.isSuperposition());
-                checkCross.setSelected(selectedIteration.isCross());
-                checkUnion.setSelected(selectedIteration.isUnion());
-                checkAddition.setSelected(selectedIteration.isAddition());
-                checkTransposition.setSelected(selectedIteration.isTransposition());
+                checkNull.setSelected(selectedIteration.getOperations().isNulll());
+                checkOne.setSelected(selectedIteration.getOperations().isOne());
+                checkUniversal.setSelected(selectedIteration.getOperations().isUniversal());
+                checkSubstitution.setSelected(selectedIteration.getOperations().isSubstitution());
+                checkMegaoperation.setSelected(selectedIteration.getOperations().isMegaoperation());
+                checkSuperposition.setSelected(selectedIteration.getOperations().isSuperposition());
+                checkCross.setSelected(selectedIteration.getOperations().isCross());
+                checkUnion.setSelected(selectedIteration.getOperations().isUnion());
+                checkAddition.setSelected(selectedIteration.getOperations().isAddition());
+                checkTransposition.setSelected(selectedIteration.getOperations().isTransposition());
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
@@ -199,16 +259,16 @@ public class MainFrameController implements Initializable {
                     getCheckBox(multioperation).setSelected(true);
                 }
 
-                checkNull.setSelected(selectedIteration.isNulll());
-                checkOne.setSelected(selectedIteration.isOne());
-                checkUniversal.setSelected(selectedIteration.isUniversal());
-                checkSubstitution.setSelected(selectedIteration.isSubstitution());
-                checkMegaoperation.setSelected(selectedIteration.isMegaoperation());
-                checkSuperposition.setSelected(selectedIteration.isSuperposition());
-                checkCross.setSelected(selectedIteration.isCross());
-                checkUnion.setSelected(selectedIteration.isUnion());
-                checkAddition.setSelected(selectedIteration.isAddition());
-                checkTransposition.setSelected(selectedIteration.isTransposition());
+                checkNull.setSelected(selectedIteration.getOperations().isNulll());
+                checkOne.setSelected(selectedIteration.getOperations().isOne());
+                checkUniversal.setSelected(selectedIteration.getOperations().isUniversal());
+                checkSubstitution.setSelected(selectedIteration.getOperations().isSubstitution());
+                checkMegaoperation.setSelected(selectedIteration.getOperations().isMegaoperation());
+                checkSuperposition.setSelected(selectedIteration.getOperations().isSuperposition());
+                checkCross.setSelected(selectedIteration.getOperations().isCross());
+                checkUnion.setSelected(selectedIteration.getOperations().isUnion());
+                checkAddition.setSelected(selectedIteration.getOperations().isAddition());
+                checkTransposition.setSelected(selectedIteration.getOperations().isTransposition());
             }
             else {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Не выбрал элемент отката");
@@ -328,6 +388,7 @@ public class MainFrameController implements Initializable {
         lastIteration.setName(Structure.formatDateTime.format(new Date()));
         lastIteration.setInitialMultioperations(new ArrayList<>());
         lastIteration.setFinalMultioperations(new ArrayList<>());
+        lastIteration.setOperations(new Operations());
 
         List<String> vectors = getCheckedMultioperations();
         lastIteration.getInitialMultioperations().addAll(vectors);
@@ -337,39 +398,39 @@ public class MainFrameController implements Initializable {
         }
 
         if (checkNull.isSelected()) {
-            lastIteration.setNulll(true);
+            lastIteration.getOperations().setNulll(true);
             multioperations.add(new Multioperation("0000"));
         }
         if (checkOne.isSelected()) {
-            lastIteration.setOne(true);
+            lastIteration.getOperations().setOne(true);
             multioperations.add(new Multioperation("1122"));
             multioperations.add(new Multioperation("1212"));
         }
         if (checkUniversal.isSelected()) {
-            lastIteration.setUniversal(true);
+            lastIteration.getOperations().setUniversal(true);
             multioperations.add(new Multioperation("3333"));
         }
 
         if (checkTransposition.isSelected()) {
-            lastIteration.setTransposition(true);
+            lastIteration.getOperations().setTransposition(true);
         }
         if (checkAddition.isSelected()) {
-            lastIteration.setAddition(true);
+            lastIteration.getOperations().setAddition(true);
         }
         if (checkMegaoperation.isSelected()) {
-            lastIteration.setMegaoperation(true);
+            lastIteration.getOperations().setMegaoperation(true);
         }
         if (checkCross.isSelected()) {
-            lastIteration.setCross(true);
+            lastIteration.getOperations().setCross(true);
         }
         if (checkUnion.isSelected()) {
-            lastIteration.setUnion(true);
+            lastIteration.getOperations().setUnion(true);
         }
         if (checkSubstitution.isSelected()) {
-            lastIteration.setSubstitution(true);
+            lastIteration.getOperations().setSubstitution(true);
         }
         if (checkSuperposition.isSelected()) {
-            lastIteration.setSuperposition(true);
+            lastIteration.getOperations().setSuperposition(true);
         }
 
         Set<Multioperation> newMultioperations = new TreeSet<>();

@@ -7,12 +7,13 @@ import ru.silirdco.nir.core.entities.Multioperation;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class WriteUtil {
     private static final Logger logger = LoggerFactory.getLogger(WriteUtil.class);
 
-    public static void print(List<List<Multioperation>> list) {
+    public static void print(Collection<Collection<Multioperation>> list) {
         try {
             File myPath = new File(System.getProperty("user.dir") + "\\Print\\");
 
@@ -35,7 +36,7 @@ public class WriteUtil {
             try (PrintWriter out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsoluteFile()), StandardCharsets.UTF_8))) {
                 //Записываем текст в файл
                 StringBuilder stringBuilder = new StringBuilder();
-                for (List<Multioperation> multioperations : list) {
+                for (Collection<Multioperation> multioperations : list) {
                     stringBuilder.append(Arrays.toString(multioperations.toArray()));
                     stringBuilder.append("\n");
                 }

@@ -162,7 +162,12 @@ public class MainFrameController implements Initializable {
                                 progressBar.setProgress(VarUtils.getDouble((Double) newValue))));
                 //ClosedSetUtil.progressProperty.bind(progressBar.progressProperty());
                 //progressBar.progressProperty().bind(ClosedSetUtil.progressProperty);
-                Collection<Collection<Multioperation>> closedSets = ClosedSetUtil.getClosedSets(operations);
+                List<String> vectors = getCheckedMultioperations();
+                Set<Multioperation> multioperations = new TreeSet<>();
+                for (String vector : vectors) {
+                    multioperations.add(new Multioperation(vector));
+                }
+                Collection<Collection<Multioperation>> closedSets = ClosedSetUtil.getClosedSets(operations, multioperations);
                 Platform.runLater(() -> {
                     ClosedSetUtil.progressProperty.removeListener(changeListener);
                     progressBar.setProgress(0);

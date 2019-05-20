@@ -20,7 +20,7 @@ public class ClosedSetUtil {
     private static boolean first = true;
     public static DoubleProperty progressProperty = new SimpleDoubleProperty(0);
 
-    public static Collection<Collection<Multioperation>> getClosedSets(Operations operations) {
+    public static Collection<Collection<Multioperation>> getClosedSets(Operations operations, Collection<Multioperation> startMultioperations) {
         progressProperty.setValue(0);
         first = true;
         resultList.clear();
@@ -45,7 +45,7 @@ public class ClosedSetUtil {
             multioperations.add(multioperation);
         });
 
-        TreeSet<Multioperation> start = new TreeSet<>();
+        TreeSet<Multioperation> start = new TreeSet<>(startMultioperations);
 
         if (operations.isNulll()) {
             start.add(Multioperation.EMPTY);
